@@ -69,10 +69,10 @@ validate_required_input "geckoboard_api_key" ${geckoboard_api_key}
 validate_required_input "widget_key" ${widget_key}
 
 # - Send request
-if [ "$BITRISE_BUILD_STATUS" = "0" ] ; then
-    message="Build succeeded! (#$BITRISE_BUILD_NUMBER)"
+if [ "$build_status" = "0" ] ; then
+    message="Build succeeded! (#$build_number)"
 else 
-    message="Build failed! (#$BITRISE_BUILD_NUMBER)"
+    message="Build failed! (#$build_number)"
 fi
 
 response=$(curl http://push.geckoboard.com/v1/send/$widget_key -d "{\"api_key\":\"$geckoboard_api_key\", \"data\":{\"item\":[{\"text\":\"$message\",\"type\":0}]}}")

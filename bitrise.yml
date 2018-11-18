@@ -44,6 +44,8 @@ workflows:
         inputs:
         - geckoboard_api_key: $GECKOBOARD_API_KEY
         - widget_key: $WIDGET_KEY
+        - build_number: $BITRISE_BUILD_NUMBER
+        - build_status: $BITRISE_BUILD_STATUS
   test-with-invalid-api-key:
     steps:
     - path::./:
@@ -55,6 +57,8 @@ workflows:
         inputs:
         - geckoboard_api_key: INVALID_API_KEY_123
         - widget_key: $WIDGET_KEY
+        - build_number: $BITRISE_BUILD_NUMBER
+        - build_status: $BITRISE_BUILD_STATUS
   test-with-invalid-widget-key:
     steps:
     - path::./:
@@ -66,6 +70,8 @@ workflows:
         inputs:
         - geckoboard_api_key: $GECKOBOARD_API_KEY
         - widget_key: INVALID_WIDGET_KEY_123
+        - build_number: $BITRISE_BUILD_NUMBER
+        - build_status: $BITRISE_BUILD_STATUS
 
   # ----------------------------------------------------------------
   # --- workflows to Share this step into a Step Library
