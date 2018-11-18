@@ -61,7 +61,7 @@ inputs:
       is_required: true
       is_sensitive: true
       value_options: []
-  - build_number: # no default value
+  - build_number: 8
     opts:
       title: "Bitrise build number"
       summary: Bitrise build number
@@ -71,7 +71,7 @@ inputs:
       is_required: true
       is_sensitive: false
       value_options: []
-  - build_status: # no default value
+  - build_status: 0 # default is successful build
     opts:
       title: "Bitrise status"
       summary: Bitrise status

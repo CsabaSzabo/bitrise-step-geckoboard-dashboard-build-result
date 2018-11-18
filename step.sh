@@ -62,6 +62,8 @@ function validate_required_input {
 echo_info "Configs:"
 echo_info "* geckoboard_api_key: **"
 echo_info "* widget_key: ${widget_key}"
+echo_info "* build_number: ${build_number}"
+echo_info "* build_status: ${build_status}"
 
 echo
 
