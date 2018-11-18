@@ -1,0 +1,119 @@
+format_version: 4
+default_step_lib_source: https://github.com/bitrise-io/bitrise-steplib.git
+
+app:
+  envs:
+  # define these in your .bitrise.secrets.yml
+  - GECKOBOARD_API_KEY: $GECKOBOARD_API_KEY
+  - WIDGET_KEY: $WIDGET_KEY
+  # If you want to share this step into a StepLib
+  - BITRISE_STEP_ID: geckoboard-dashboard-build-result
+  - BITRISE_STEP_VERSION: "0.1.0"
+  - BITRISE_STEP_GIT_CLONE_URL: https://github.com/CsabaSzabo/bitrise-step-geckoboard-dashboard-build-result.git
+  - MY_STEPLIB_REPO_FORK_GIT_URL: $MY_STEPLIB_REPO_FORK_GIT_URL
+
+workflows:
+  # ----------------------------------------------------------------
+  # --- workflows to test this step
+  test:
+    steps:
+    - path::./:
+        title: Step Test
+        is_always_run: true
+        description: |-
+          Testing the step itself.
+        run_if: true
+        inputs:
+        - geckoboard_api_key: $GECKOBOARD_API_KEY
+        - widget_key: $WIDGET_KEY
+  test-with-failed-build:
+    steps:
+    - script:
+        title: Failed test step
+        inputs:
+        - content: |-
+            #!/bin/bash
+            set -ex
+            exit 1
+    - path::./:
+        title: Step Test with failed build
+        is_always_run: true
+        description: |-
+          Testing the step after a failed build.
+        run_if: true
+        inputs:
+        - geckoboard_api_key: $GECKOBOARD_API_KEY
+        - widget_key: $WIDGET_KEY
+  test-with-invalid-api-key:
+    steps:
+    - path::./:
+        title: Step Test with invalid API key
+        is_always_run: true
+        description: |-
+          Testing the step with invalid Geckoboard API key
+        run_if: true
+        inputs:
+        - geckoboard_api_key: INVALID_API_KEY_123
+        - widget_key: $WIDGET_KEY
+  test-with-invalid-widget-key:
+    steps:
+    - path::./:
+        title: Step Test with invalid widget key
+        is_always_run: true
+        description: |-
+          Testing the step with invalid Geckoboard widget key
+        run_if: true
+        inputs:
+        - geckoboard_api_key: $GECKOBOARD_API_KEY
+        - widget_key: INVALID_WIDGET_KEY_123
+
+  # ----------------------------------------------------------------
+  # --- workflows to Share this step into a Step Library
+  audit-this-step:
+    steps:
+    - script:
+        inputs:
+        - content: |-
+            #!/bin/bash
+            set -ex
+            stepman audit --step-yml ./step.yml
+
+  share-this-step:
+    envs:
+      # if you want to share this step into a StepLib
+      - MY_STEPLIB_REPO_FORK_GIT_URL: $MY_STEPLIB_REPO_FORK_GIT_URL
+      - BITRISE_STEP_ID: $BITRISE_STEP_ID
+      - BITRISE_STEP_VERSION: $BITRISE_STEP_VERSION
+      - BITRISE_STEP_GIT_CLONE_URL: $BITRISE_STEP_GIT_CLONE_URL
+    description: |-
+      If this is the first time you try to share a Step you should
+      first call: $ bitrise share
+
+      This will print you a guide, and information about how Step sharing
+      works. Please read it at least once!
+
+      As noted in the Step sharing guide you'll have to fork the
+      StepLib you want to share this step into. Once you're done with forking
+      the repository you should set your own fork's git clone URL
+      in the `.bitrise.secrets.yml` file, or here in the `envs` section,
+      as the value of the `MY_STEPLIB_REPO_FORK_GIT_URL` environment.
+
+      You're now ready to share this Step, just make sure that
+      the `BITRISE_STEP_ID` and `BITRISE_STEP_VERSION`
+      environments are set to the desired values!
+
+      To share this Step into a StepLib you can just run: $ bitrise run share-this-step
+
+      Once it finishes the only thing left is to actually create a Pull Request,
+      the way described in the guide printed at the end of the process.
+    before_run:
+    - audit-this-step
+    steps:
+    - script:
+        inputs:
+        - content: |-
+            #!/bin/bash
+            set -ex
+            bitrise share start -c "${MY_STEPLIB_REPO_FORK_GIT_URL}"
+            bitrise share create --stepid "${BITRISE_STEP_ID}" --tag "${BITRISE_STEP_VERSION}" --git "${BITRISE_STEP_GIT_CLONE_URL}"
+            bitrise share finish
