@@ -26,6 +26,8 @@ workflows:
         inputs:
         - geckoboard_api_key: $GECKOBOARD_API_KEY
         - widget_key: $WIDGET_KEY
+        - build_number: $BITRISE_BUILD_NUMBER
+        - build_status: $BITRISE_BUILD_STATUS
   test-with-failed-build:
     steps:
     - script:
