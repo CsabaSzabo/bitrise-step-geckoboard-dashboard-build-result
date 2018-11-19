@@ -1,3 +1,5 @@
+[![Build Status](https://app.bitrise.io/app/549901f99fe9b45a/status.svg?token=qLKvx73rW5vUWHCLX__1xQ&branch=master)](https://app.bitrise.io/app/549901f99fe9b45a)
+
 # Geckoboard dashboard build result
 
 Updated Geckoboard dashboard with build the latest build result
